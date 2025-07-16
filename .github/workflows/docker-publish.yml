@@ -1,0 +1,22 @@
+name: Publish tensorflow/notebooks Image to GHCR
+
+on:
+  push:
+    branches: ["main"]
+    paths: ["Dockerfile"]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Login to GitHub Container Registry
+        run: echo "${{ secrets.NOTEBOOKS_BASE_IMAGE_GHCR_TOKEN }}" | docker login ghcr.io -u MahmoudHousam --password-stdin
+
+      - name: Build and Push The Image
+        run: |
+          IMAGE_ID=ghcr.io/MahmoudHousam/ahc-notebooks-base-image
+          docker build -t $IMAGE_ID:latest .
+          docker push $IMAGE_ID:latest
