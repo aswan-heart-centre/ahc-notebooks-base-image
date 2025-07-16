@@ -18,6 +18,6 @@ jobs:
 
       - name: Build and Push The Image
         run: |
-          IMAGE_ID=ghcr.io/MahmoudHousam/ahc-notebooks-base-image
+          IMAGE_ID=ghcr.io/mahmoudhousam/ahc-notebooks-base-image
           docker build -t $IMAGE_ID:latest .
           docker push $IMAGE_ID:latest
