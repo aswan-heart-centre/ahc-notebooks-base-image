@@ -1,32 +1,18 @@
-FROM jupyter/tensorflow-notebook:python-3.11
+FROM python:3.11-slim-bookworm
 
 WORKDIR /home/jovyan/work
 
-# Python packages
-RUN pip install \
-  plotly==5.8.0 \
-  plotly-geo==1.0.0 \
-  pymongo==4.1.1 \
-  python-dotenv==0.19.1 \
-  jupyter-contrib-nbextensions==0.5.1 \
-  pylantern==0.1.6 \
-  qgrid==1.3.1 \
-  pandas-profiling==3.0.0 \
-  SQLAlchemy==1.4.37 \
-  pytest==6.2.2 \
-  streamlit==1.10.0 \
-  streamlit-aggrid==0.2.3 \
-  simplejson==3.17.2 && \
-  kaleido==1.0.0 \
-  fix-permissions $CONDA_DIR && \
-  fix-permissions /home/$NB_USER
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    # build-essentials \
+    && rm  -rf /var/lib/apt/lists*
 
-USER root
+RUN useradd -m -s /bin/bash jovyan && \
+    mkdir -p /home/jovyan/work/notebooks
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 USER jovyan
-
-RUN mkdir /home/jovyan/work/notebooks
-
 WORKDIR /home/jovyan/work/notebooks
 
-CMD ["jupyter", "lab"]
