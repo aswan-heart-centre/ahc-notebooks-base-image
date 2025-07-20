@@ -14,6 +14,6 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 USER jovyan
-RUN mkdir /home/jovyan/work/notebooks
+
 WORKDIR /home/jovyan/work/notebooks
 
