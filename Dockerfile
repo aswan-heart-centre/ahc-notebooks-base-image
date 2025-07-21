@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm  -rf /var/lib/apt/lists*
 
 RUN useradd -m -s /bin/bash jovyan && \
-    mkdir -p /home/jovyan/work/notebooks
+    mkdir -p /home/jovyan/work/notebooks && \
+    chown -R jovyan:jovyan /home/jovyan
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
