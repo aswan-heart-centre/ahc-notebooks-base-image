@@ -3,8 +3,9 @@ name: Publish Image to GHCR
 on:
   push:
     branches: [ main ]
+    tags: [ "v*.*.*" ]
     paths: [ "Dockerfile" ]
-  workflow_dispatch:
+  workflow_dispatch:  
 
 jobs:
   docker:
@@ -12,12 +13,24 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Extract Metadata
+        id: metadata
+        uses: docker/metadata-action@v4
+        with:
+          images: ghcr.io/aswan-heart-centre/ahc-notebooks-base-image
+          tags: |
+            type=raw, value=latest
+            type=semver, pattern={{version}}, prefix=v
 
       - name: Login to GitHub Container Registry
         run: echo "${{ secrets.NOTEBOOKS_BASE_IMAGE_GHCR_TOKEN }}" | docker login ghcr.io -u MahmoudHousam --password-stdin
 
-      - name: Build and Push The Image
-        run: |
-          IMAGE_ID=ghcr.io/aswan-heart-centre/ahc-notebooks-base-image
-          docker build -t $IMAGE_ID:latest .
-          docker push $IMAGE_ID:latest
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
