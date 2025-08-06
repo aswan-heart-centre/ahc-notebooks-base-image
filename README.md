@@ -1,4 +1,4 @@
-# Python 3.11-Slimbook-warm Docker Image
+# AHC Docker Base Image
 
 This repo aims to serve as the parent image for child Docker images created in [`ahc-notebooks`](https://github.com/aswan-heart-centre/ahc-notebooks), [`ahc-data-import`](https://github.com/aswan-heart-centre/ahc-data-import), and [`ahc-analytics/flaskapi`](https://github.com/aswan-heart-centre/ahc-analytics).
 
