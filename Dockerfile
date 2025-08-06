@@ -10,19 +10,12 @@ RUN useradd -m -s /bin/bash jovyan && \
     mkdir -p /home/jovyan/work/notebooks && \
     chown -R jovyan:jovyan /home/jovyan
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    bash \
-    curl \
-    git \
-    build-essential \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    locales \
-    && rm -rf /var/lib/apt/lists/*
+# Install Python packages
+COPY requirements.txt /home/jovyan/work/notebooks/requirements.txt
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r /home/jovyan/work/notebooks/requirements.txt
+RUN pip install plotly-calplot==0.1.20 --no-deps
 
-RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen
 
 USER jovyan
 
