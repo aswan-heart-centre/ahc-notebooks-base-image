@@ -5,6 +5,22 @@ ENV LANG=en_US.UTF-8 \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8
 
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    dumb-init \
+    build-essential \
+    bash \
+    git \
+    ca-certificates \
+    libfreetype6-dev \
+    gfortran \
+    libffi-dev \
+    libssl-dev \
+    libcurl4-openssl-dev \
+    curl \
+    linux-headers-amd64 \
+    && rm -rf /var/lib/apt/lists/*
+
 # Create jovyan user and working directories
 RUN useradd -m -s /bin/bash jovyan && \
     mkdir -p /home/jovyan/work/notebooks && \
