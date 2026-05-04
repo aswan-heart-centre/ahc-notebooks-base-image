@@ -19,6 +19,7 @@ RUN apt-get update && \
     libcurl4-openssl-dev \
     curl \
     linux-headers-amd64 \
+    chromium \
     && rm -rf /var/lib/apt/lists/*
 
 # Create jovyan user and working directories
